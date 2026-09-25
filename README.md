@@ -81,8 +81,8 @@ A toggle above the Symbol chips — **Auto-Scan: OFF/ON** — runs the
 currently selected Strategy against the currently selected
 Symbol/Timeframe on a loop, without you tapping Scan Chart:
 
-- Checks every 45s (same cadence as the plain chart refresh, and it
-  replaces that refresh while active, so there's no extra API load).
+- Checks every 5 minutes (deliberately slower than the plain chart
+  refresh, to stay well clear of Twelve Data's rate limit).
 - Only surfaces a signal once — if the same setup is still active next
   cycle, it won't re-alert; if the setup disappears (back to `wait`)
   and a *different* one shows up later, that's treated as new.

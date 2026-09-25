@@ -188,8 +188,8 @@
       stopPolling(); // auto-scan's own cycle replaces the plain chart poll — avoid double-fetching
       clearInterval(autoScanTimer);
       runAutoScanCycle();
-      autoScanTimer = setInterval(runAutoScanCycle, 45000);
-      statusEl.textContent = `Scanning ${state.symbol} (${state.timeframe}) with ${engineLabel(state.strategy)} every 45s…`;
+      autoScanTimer = setInterval(runAutoScanCycle, 300000); // every 5 minutes — stay well under Twelve Data's rate limit
+      statusEl.textContent = `Scanning ${state.symbol} (${state.timeframe}) with ${engineLabel(state.strategy)} every 5 minutes…`;
     } else {
       clearInterval(autoScanTimer);
       statusEl.textContent = '';
