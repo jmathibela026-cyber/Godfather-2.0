@@ -1,0 +1,48 @@
+/* ==========================================================================
+   GODFATHER — Design Tokens
+   Dark neon trading-terminal system, derived from the reference UI.
+   ========================================================================== */
+
+:root {
+  /* --- Core palette --- */
+  --bg-void:        #060406;   /* deepest background */
+  --bg-base:        #0b070c;   /* app background */
+  --bg-surface:     #140c16;   /* cards, panels */
+  --bg-surface-2:   #1c1120;   /* elevated / active surface */
+
+  --accent:         #c724ff;   /* primary neon magenta */
+  --accent-soft:    #a13dd6;   /* dimmer magenta for borders */
+  --accent-glow:    rgba(199, 36, 255, 0.45);
+  --accent-glow-soft: rgba(199, 36, 255, 0.18);
+
+  --live:           #ff3b30;   /* record dot / live indicator */
+
+  --buy:            #00c853;   /* bullish / buy / take-profit */
+  --buy-glow:       rgba(0, 200, 83, 0.35);
+  --sell:           #ff2d55;   /* bearish / sell / stop-loss */
+  --sell-glow:      rgba(255, 45, 85, 0.35);
+
+  --text-primary:   #f5eef7;
+  --text-secondary: #9c8ea3;
+  --text-muted:     #5f5566;
+  --text-on-accent: #0b070c;
+
+  --border-dim:     rgba(199, 36, 255, 0.25);
+  --border-bright:  rgba(199, 36, 255, 0.65);
+
+  /* --- Type --- */
+  --font-display: 'Sora', 'Segoe UI', system-ui, sans-serif;
+  --font-body:    'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'SF Mono', monospace;
+
+  /* --- Shape & motion --- */
+  --radius-pill:  999px;
+  --radius-card:  20px;
+  --radius-sm:    12px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* --- Safe areas --- */
+  --sat: env(safe-area-inset-top, 0px);
+  --sab: env(safe-area-inset-bottom, 0px);
+}

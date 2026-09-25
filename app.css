@@ -1,0 +1,435 @@
+/* ==========================================================================
+   GODFATHER — App Shell & Components
+   ========================================================================== */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none;
+}
+
+body {
+  padding-top: var(--sat);
+  padding-bottom: var(--sab);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+button, input, select { font-family: inherit; color: inherit; }
+
+/* ---- Top bar ---- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px 10px;
+}
+
+.topbar__left { display: flex; align-items: center; gap: 14px; }
+
+.topbar__back {
+  background: none; border: none; color: var(--accent);
+  font-size: 22px; line-height: 1; cursor: pointer;
+}
+
+.topbar__title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.voice-pill {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-bright);
+  background: var(--accent-glow-soft);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 0 18px var(--accent-glow-soft);
+}
+
+/* ---- Main scroll area ---- */
+.screen {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 20px calc(180px + var(--sab));
+}
+
+/* ---- Chart card ---- */
+.chart-card {
+  position: relative;
+  margin-top: 6px;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  border: 1px solid var(--border-bright);
+  box-shadow: 0 0 40px var(--accent-glow), 0 0 80px var(--accent-glow-soft);
+  background: #fff;
+}
+
+.chart-card img, .chart-card canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.chart-card__price {
+  position: absolute;
+  top: 12px; right: 12px;
+  background: var(--buy);
+  color: #04140a;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 4px 9px;
+  border-radius: 6px;
+}
+
+/* ---- Progress bar ---- */
+.progress-track {
+  height: 3px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface-2);
+  margin: 16px 0 18px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 40%;
+  background: var(--accent);
+  box-shadow: 0 0 12px var(--accent-glow);
+  transition: width 0.4s var(--ease-out);
+}
+
+/* ---- Analysis checklist ---- */
+.checklist { display: flex; flex-direction: column; gap: 14px; }
+
+.checklist__item {
+  display: flex; align-items: center; gap: 12px;
+  font-size: 14.5px;
+  color: var(--text-muted);
+  transition: color 0.3s var(--ease-out);
+}
+
+.checklist__item.is-done { color: var(--text-secondary); }
+.checklist__item.is-active { color: var(--accent); font-weight: 600; }
+
+.checklist__dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--text-muted); flex-shrink: 0;
+  transition: background 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+.checklist__item.is-done .checklist__dot,
+.checklist__item.is-active .checklist__dot {
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* ---- Section labels ---- */
+.section-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  margin: 26px 0 12px;
+}
+
+/* ---- Chip groups ---- */
+.chip-row {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+
+.chip {
+  display: flex; align-items: center; gap: 7px;
+  padding: 11px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s var(--ease-out);
+}
+
+.chip.is-selected {
+  border-color: var(--border-bright);
+  color: var(--accent);
+  background: var(--accent-glow-soft);
+  box-shadow: 0 0 16px var(--accent-glow-soft);
+}
+
+.chip:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ---- Bottom-anchored primary action ---- */
+.action-dock {
+  position: fixed;
+  left: 0; right: 0;
+  bottom: calc(66px + var(--sab));
+  padding: 14px 20px 10px;
+  background: linear-gradient(to top, var(--bg-base) 65%, transparent);
+  z-index: 20;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 17px;
+  border: none;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-family: var(--font-display);
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 30px var(--accent-glow);
+  cursor: pointer;
+}
+
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  width: 100%;
+  padding: 15px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-bright);
+  background: transparent;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 14.5px;
+  font-weight: 700;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+/* ---- Signal notification toast ---- */
+.signal-toast {
+  display: flex; gap: 12px;
+  align-items: flex-start;
+  padding: 14px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  margin-top: 10px;
+}
+
+.signal-toast__icon {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: var(--bg-surface-2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.signal-toast__title { font-size: 13.5px; font-weight: 700; }
+.signal-toast__body { font-size: 12.5px; color: var(--text-secondary); margin-top: 2px; }
+
+/* ---- Reasoning panel ---- */
+.reasoning {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border-left: 3px solid var(--accent);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.reasoning strong { color: var(--accent); }
+
+/* ---- Signal card ---- */
+.signal-card {
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-bright);
+  box-shadow: 0 0 30px var(--accent-glow-soft);
+}
+
+.signal-card__head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.signal-card__symbol {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-display);
+  font-size: 19px; font-weight: 800;
+}
+
+.signal-card__symbol .arrow { font-size: 18px; }
+.signal-card__symbol.is-buy .arrow { color: var(--buy); }
+.signal-card__symbol.is-sell .arrow { color: var(--sell); }
+
+.direction-badge {
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.direction-badge.buy { background: var(--buy); color: #04140a; }
+.direction-badge.sell { background: var(--sell); color: #1a0308; }
+
+.metric-row { display: flex; gap: 10px; margin-bottom: 14px; }
+
+.metric-box {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-2);
+}
+
+.metric-box__label {
+  font-size: 10.5px; color: var(--text-muted);
+  display: flex; align-items: center; gap: 5px;
+  margin-bottom: 4px;
+}
+
+.metric-box__value { font-family: var(--font-mono); font-size: 15px; font-weight: 600; }
+.metric-box--sl .metric-box__value { color: var(--sell); }
+.metric-box--tp .metric-box__value { color: var(--buy); }
+
+.detail-row {
+  display: flex; justify-content: space-between;
+  padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.detail-item .detail-item__label {
+  font-size: 10.5px; color: var(--text-muted); margin-bottom: 3px;
+}
+.detail-item .detail-item__value { font-size: 13.5px; font-weight: 600; }
+
+/* ---- Bottom tab bar ---- */
+.tabbar {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 90px;
+  padding: 10px 8px calc(10px + var(--sab));
+  background: var(--bg-surface);
+  border-top: 1px solid var(--border-dim);
+  box-shadow: 0 -6px 30px var(--accent-glow-soft);
+  z-index: 10;
+}
+
+.tab {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: none; border: none;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.tab.is-active { color: var(--accent); }
+
+.tab__icon {
+  width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.tab--home .tab__icon {
+  width: 52px; height: 52px;
+  margin-top: -30px;
+  border-radius: 50%;
+  background: var(--bg-base);
+  border: 3px solid var(--accent);
+  box-shadow: 0 0 24px var(--accent-glow);
+}
+
+/* ---- Upload zone ---- */
+.upload-zone {
+  margin-top: 30px;
+  padding: 40px 24px;
+  border-radius: var(--radius-card);
+  border: 1.5px dashed var(--border-bright);
+  background: var(--bg-surface);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.upload-zone__icon { font-size: 36px; }
+.upload-zone__title { font-family: var(--font-display); font-size: 16px; font-weight: 700; }
+.upload-zone__hint { font-size: 12.5px; color: var(--text-muted); max-width: 260px; line-height: 1.5; margin-bottom: 10px; }
+.upload-zone .btn-primary { width: auto; padding: 13px 26px; }
+
+.chart-card__clear {
+  position: absolute;
+  top: 10px; right: 10px;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+/* ---- Settings page ---- */
+.settings-card {
+  margin-top: 10px;
+  margin-bottom: 8px;
+  padding: 16px;
+  border-radius: var(--radius-card);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-dim);
+  display: flex;
+  flex-direction: column;
+}
+
+.field-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 12px 0 6px;
+}
+.field-label:first-child { margin-top: 0; }
+
+.field-input {
+  padding: 13px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: var(--font-mono);
+}
+
+.field-hint {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-top: 10px;
+}
+
+.settings-status {
+  text-align: center;
+  color: var(--buy);
+  font-weight: 700;
+  font-size: 13.5px;
+  margin-top: 12px;
+}
+
+/* ---- Trade count chips ---- */
+.trade-count-chip { min-width: 52px; justify-content: center; }
+
+/* ---- Utility ---- */
+.hidden { display: none !important; }

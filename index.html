@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#0b070c">
+<title>Godfather — Chart Scanner</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar__left">
+    <span class="topbar__title" id="topbarTitle">CHART SCANNER</span>
+  </div>
+  <button class="voice-pill">&#9834; VOICE AI</button>
+</header>
+
+<!-- ============================= HOME PAGE ============================= -->
+<main class="screen" id="page-home">
+
+  <!-- Live chart -->
+  <div class="chart-card" id="liveCard">
+    <canvas id="chartCanvas" width="640" height="420"></canvas>
+    <span class="chart-card__price" id="livePrice">— </span>
+  </div>
+  <div class="field-hint" id="chartStatus" style="margin-top:8px;"></div>
+
+  <div class="section-label">AUTO-SCAN</div>
+  <div class="chip-row">
+    <button class="chip" id="autoScanToggle" data-active="false">Auto-Scan: OFF</button>
+  </div>
+  <div class="field-hint" id="autoScanStatus"></div>
+
+  <div class="progress-track hidden" id="progressTrack"><div class="progress-fill" id="progressFill"></div></div>
+
+  <!-- Analysis checklist (animates during scan) -->
+  <ul class="checklist hidden" id="checklist">
+    <li class="checklist__item" data-step="0"><span class="checklist__dot"></span>Reading candles &amp; price action</li>
+    <li class="checklist__item" data-step="1"><span class="checklist__dot"></span>Scanning market structure (BOS / CHoCH)</li>
+    <li class="checklist__item" data-step="2"><span class="checklist__dot"></span>Mapping swing highs &amp; lows</li>
+    <li class="checklist__item" data-step="3"><span class="checklist__dot"></span>Detecting order blocks &amp; FVGs</li>
+    <li class="checklist__item" data-step="4"><span class="checklist__dot"></span>Locating liquidity pools (BSL / SSL)</li>
+    <li class="checklist__item" data-step="5"><span class="checklist__dot"></span>Confirming premium / discount bias</li>
+    <li class="checklist__item" data-step="6"><span class="checklist__dot"></span>Building trade plan (Entry / SL / TP)</li>
+  </ul>
+
+  <div id="chipSection">
+    <div class="section-label">SYMBOL — INDICES / METALS</div>
+    <div class="chip-row" id="symbolChips">
+      <button class="chip is-selected" data-value="XAUUSD">XAUUSD</button>
+      <button class="chip" data-value="US30">US30</button>
+      <button class="chip" data-value="GER30">GER30</button>
+      <button class="chip" data-value="USTECH">USTECH</button>
+    </div>
+
+    <div class="section-label">SYMBOL — FOREX MAJORS</div>
+    <div class="chip-row" id="symbolChipsForex">
+      <button class="chip" data-value="EURUSD">EURUSD</button>
+      <button class="chip" data-value="GBPUSD">GBPUSD</button>
+      <button class="chip" data-value="USDJPY">USDJPY</button>
+      <button class="chip" data-value="USDCHF">USDCHF</button>
+      <button class="chip" data-value="AUDUSD">AUDUSD</button>
+      <button class="chip" data-value="USDCAD">USDCAD</button>
+      <button class="chip" data-value="NZDUSD">NZDUSD</button>
+    </div>
+
+    <div class="section-label">STRATEGY</div>
+    <div class="chip-row" id="strategyChips">
+      <button class="chip is-selected" data-value="rsi">&#9670; RSI Momentum</button>
+      <button class="chip" data-value="ma">&#9670; Moving Averages</button>
+      <button class="chip" data-value="stoch">&#9670; Stochastic Oscillator</button>
+    </div>
+
+    <div class="section-label">TIMEFRAME</div>
+    <div class="chip-row" id="tfChips">
+      <button class="chip" data-value="M5">M5</button>
+      <button class="chip is-selected" data-value="M15">M15</button>
+      <button class="chip" data-value="H1">H1</button>
+      <button class="chip" data-value="H4">H4</button>
+    </div>
+  </div>
+
+  <!-- Signal result view (shown after a completed scan) -->
+  <section id="resultView" class="hidden">
+
+    <div class="signal-toast">
+      <div class="signal-toast__icon">&#129302;</div>
+      <div>
+        <div class="signal-toast__title" id="toastTitle">New signal detected</div>
+        <div class="signal-toast__body" id="toastBody">from GODFATHER</div>
+      </div>
+    </div>
+
+    <div class="chart-card" style="margin-top:14px;">
+      <canvas id="resultCanvas" width="640" height="420"></canvas>
+    </div>
+
+    <div class="reasoning" id="reasoningBox"></div>
+
+    <div class="signal-card">
+      <div class="signal-card__head">
+        <div class="signal-card__symbol" id="cardSymbol">
+          <span class="arrow">&#8595;</span> XAUUSD
+        </div>
+        <div class="direction-badge" id="cardBadge">SELL</div>
+      </div>
+
+      <div class="metric-row">
+        <div class="metric-box metric-box--entry">
+          <div class="metric-box__label">&#10022; ENTRY</div>
+          <div class="metric-box__value" id="cardEntry">—</div>
+        </div>
+        <div class="metric-box metric-box--sl">
+          <div class="metric-box__label">&#8862; SL</div>
+          <div class="metric-box__value" id="cardSL">—</div>
+        </div>
+        <div class="metric-box metric-box--tp">
+          <div class="metric-box__label">&#9678; TP</div>
+          <div class="metric-box__value" id="cardTP">—</div>
+        </div>
+      </div>
+
+      <div class="detail-row">
+        <div class="detail-item">
+          <div class="detail-item__label">&#9889; Strategy</div>
+          <div class="detail-item__value" id="cardStrategy">ICT / Smart Money</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-item__label">&#8986; Timeframe</div>
+          <div class="detail-item__value" id="cardTimeframe">M15</div>
+        </div>
+        <div class="detail-item">
+          <div class="detail-item__label">&#9678; Confidence</div>
+          <div class="detail-item__value" id="cardConfidence">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label">NUMBER OF TRADES</div>
+    <div class="chip-row" id="tradeCountRow">
+      <button class="chip trade-count-chip" data-value="1">1</button>
+      <button class="chip trade-count-chip is-selected" data-value="3">3</button>
+      <button class="chip trade-count-chip" data-value="7">7</button>
+      <button class="chip trade-count-chip" data-value="9">9</button>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ============================= SETTINGS PAGE ============================= -->
+<main class="screen hidden" id="page-settings">
+
+  <div class="section-label">LIVE CHART DATA — TWELVE DATA</div>
+  <div class="settings-card">
+    <label class="field-label" for="twelveDataKeyInput">Twelve Data API Key</label>
+    <input class="field-input" id="twelveDataKeyInput" type="password" placeholder="your Twelve Data key" autocomplete="off">
+    <p class="field-hint">Powers the live chart. Get a free key at twelvedata.com. Note: index symbols (US30/GER30/USTECH) use Twelve Data's own tickers (DJI/GDAXI/NDX) behind the scenes — availability depends on your Twelve Data plan.</p>
+  </div>
+
+  <div class="section-label">TRADE EXECUTION — METAAPI CLOUD</div>
+  <div class="settings-card">
+    <label class="field-label" for="metaTokenInput">MetaApi Token</label>
+    <input class="field-input" id="metaTokenInput" type="password" placeholder="eyJhbGciOi..." autocomplete="off">
+
+    <label class="field-label" for="metaAccountInput">MetaApi Account ID</label>
+    <input class="field-input" id="metaAccountInput" type="text" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off">
+
+    <label class="field-label" for="metaLotInput">Default Lot Size</label>
+    <input class="field-input" id="metaLotInput" type="number" step="0.01" min="0.01" value="0.01">
+
+    <p class="field-hint">Powers trade execution only now. Stored only on this device (localStorage).</p>
+  </div>
+
+  <button class="btn-primary" id="saveSettingsBtn" type="button">Save Settings</button>
+  <div class="settings-status hidden" id="settingsStatus">Saved ✓</div>
+
+</main>
+
+<div class="action-dock" id="scanDock">
+  <button class="btn-primary" id="scanBtn">Scan Chart</button>
+</div>
+
+<div class="action-dock hidden" id="resultDock">
+  <button class="btn-primary" id="confirmTradeBtn">Confirm &amp; Execute 3 Trades</button>
+  <button class="btn-secondary" id="scanAgainBtn">Scan Another Chart</button>
+</div>
+
+<nav class="tabbar" id="tabbar">
+  <button class="tab tab--home is-active" data-page="home">
+    <span class="tab__icon">&#8962;</span>HOME
+  </button>
+  <button class="tab" data-page="settings">
+    <span class="tab__icon">&#9881;</span>SETTINGS
+  </button>
+</nav>
+
+<script src="chart.js"></script>
+<script src="scanner.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
